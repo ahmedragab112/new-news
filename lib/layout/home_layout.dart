@@ -35,7 +35,6 @@ class HomeLayout extends StatelessWidget {
               ),
             ),
             body: FutureBuilder<UsData>(
-              
               future: ApiManger.getSources(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
@@ -47,7 +46,7 @@ class HomeLayout extends StatelessWidget {
                   );
                 }
                 var sources = snapshot.data?.articles ?? [];
-                return TabsController(sources: sources);
+                return TabsController(sources: sources, category:'food' ,);
               },
             ),
           ),

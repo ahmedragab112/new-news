@@ -7,7 +7,7 @@ class SourceNews extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.all(8),
+   
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
         color: selected==true? Colors.green: Colors.transparent,

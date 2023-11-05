@@ -1,97 +1,31 @@
 import 'package:flutter/material.dart';
 
+import '../models/category_model.dart';
 import '../shared/widget/builde_image.dart';
 
-class CategoryPage extends StatefulWidget {
-  const CategoryPage({super.key});
+class CategoryPage extends StatelessWidget {
+  const CategoryPage({super.key, required this.callBack});
 
-  @override
-  State<CategoryPage> createState() => _CategoryPageState();
-}
-
-class _CategoryPageState extends State<CategoryPage> {
-  String category = '';
+  final Function callBack;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            const Text('''Pick your category 
-      of interest'''),
-            const SizedBox(
-              height: 20,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                BuildImage(
-                  side: true,
-                  image: 'assets/images/ball.png',
-                  function: () {
-                    category = 'sports';
-
-                    setState(() {});
-                  },
-                ),
-                BuildImage(
-                  side: false,
-                  image: 'assets/images/Politics.png',
-                  function: () {
-                    category = 'Politics';
-
-                    setState(() {});
-                  },
-                )
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                BuildImage(
-                    side: true,
-                    image: 'assets/images/health.png',
-                    function: () {
-                      category = 'health';
-
-                      setState(() {});
-                    }),
-                BuildImage(
-                    side: false,
-                    image: 'assets/images/bussines.png',
-                    function: () {
-                      category = 'bussines';
-
-                      setState(() {});
-                    })
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                BuildImage(
-                    side: true,
-                    image: 'assets/images/environment.png',
-                    function: () {
-                      category = 'environment';
-
-                      setState(() {});
-                    }),
-                BuildImage(
-                    side: false,
-                    image: 'assets/images/science.png',
-                    function: () {
-                      category = 'science';
-
-                      setState(() {});
-                    })
-              ],
-            )
-          ],
+    return GridView.builder(
+      padding: const EdgeInsets.all(20),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          crossAxisSpacing: 20,
+          mainAxisSpacing: 20,
+          childAspectRatio: .8),
+      itemBuilder: (context, index) => InkWell(
+        onTap: () {
+          callBack(categoryList[index]);
+        },
+        child: BuildImage(
+          categoryModel: categoryList[index],
         ),
       ),
+      itemCount: categoryList.length,
     );
   }
 }

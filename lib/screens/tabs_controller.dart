@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:news_app_cours/models/article.dart';
-import 'package:news_app_cours/models/source.dart';
+import 'package:news_app_cours/screens/details_screen.dart';
 import 'package:news_app_cours/shared/backend/api/api_manger.dart';
 import 'package:news_app_cours/shared/widget/source_news.dart';
 
@@ -35,15 +35,17 @@ class _TabsControllerState extends State<TabsController> {
                 setState(() {});
               },
               tabs: widget.sources
-                  .map((e) => SourceNews(
-                        sourceName: e.source!.name!,
-                        selected:
-                            widget.sources.indexOf(e) == index ? true : false,
-                      ))
+                  .map(
+                    (e) => SourceNews(
+                      sourceName: e.source!.name!,
+                      selected:
+                          widget.sources.indexOf(e) == index ? true : false,
+                    ),
+                  )
                   .toList(),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           FutureBuilder(
@@ -66,8 +68,15 @@ class _TabsControllerState extends State<TabsController> {
                     height: 20,
                   ),
                   itemBuilder: (context, index) {
-                    return NewsItem(
-                    article: Article( urlToImage:articals[index].urlToImage, description: articals[index].description, publishedAt: articals[index].publishedAt, source: Source(name: articals[index].source!.name, id: articals[index].source!.id), author: articals[index].author ),
+                    return InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => DetailsScreen(articale: articals[index], ),)  );
+                      },
+                      child: NewsItem(
+                        article: articals[index]
+                      ),
                     );
                   },
                   itemCount: articals.length,

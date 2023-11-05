@@ -8,12 +8,13 @@ class AppRouter {
     switch (settings.name) {
       case Routes.homeLayout:
         return MaterialPageRoute(
-          builder: (_) => const HomeLayout(),
+          builder: (_) =>  const HomeLayout(),
         );
-        
+   
+     
       default:
         return MaterialPageRoute(
-          builder: (_) => const HomeLayout(),
+          builder: (_) =>  const HomeLayout(),
         );
     }
   }

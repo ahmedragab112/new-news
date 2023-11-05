@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:news_app_cours/models/article.dart';
 
 class NewsItem extends StatelessWidget {
-  const NewsItem(
-      {super.key,
-     required this.article});
+  const NewsItem({super.key, required this.article});
   final Article article;
 
   @override
@@ -17,8 +15,8 @@ class NewsItem extends StatelessWidget {
           height: 180,
           width: double.infinity,
           fit: BoxFit.fill,
-          imageUrl: article.urlToImage??'https://agentestudio.com/uploads/post/image/69/main_how_to_design_404_page.png',
-                   
+          imageUrl: article.urlToImage ??
+              'https://agentestudio.com/uploads/post/image/69/main_how_to_design_404_page.png',
           placeholder: (context, url) => const Center(
             child: CircularProgressIndicator(
               color: Colors.green,

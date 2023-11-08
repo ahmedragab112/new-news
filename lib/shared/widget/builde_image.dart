@@ -10,7 +10,7 @@ class BuildImage extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(bottom: 20),
       width: 148,
-      padding: EdgeInsets.symmetric(vertical: 20),
+      padding: const EdgeInsets.symmetric(vertical: 20),
       height: 171,
       decoration: BoxDecoration(
         color: categoryModel.color,

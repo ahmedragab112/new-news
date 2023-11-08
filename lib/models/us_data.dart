@@ -1,14 +1,15 @@
 import 'article.dart';
 
-class UsData {
+class SourceData {
   String? status;
   int? totalResults;
   List<Article>? articles;
   String? message;
-  String? code; 
-  UsData({this.status, this.totalResults, this.articles, this.code, this.message});
+  String? code;
+  SourceData(
+      {this.status, this.totalResults, this.articles, this.code, this.message});
 
-  factory UsData.fromJson(Map<String, dynamic> json) => UsData(
+  factory SourceData.fromJson(Map<String, dynamic> json) => SourceData(
         status: json['status'] as String?,
         code: json['code '],
         message: json['message'],

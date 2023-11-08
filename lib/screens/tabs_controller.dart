@@ -1,23 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:news_app_cours/models/article.dart';
+import 'package:news_app_cours/screens/cubit/cubit.dart';
 import 'package:news_app_cours/screens/details_screen.dart';
-import 'package:news_app_cours/shared/backend/api/api_manger.dart';
 import 'package:news_app_cours/shared/widget/source_news.dart';
-
 import '../shared/widget/news_item.dart';
 
-class TabsController extends StatefulWidget {
-  const TabsController(
-      {super.key, required this.sources, required this.category});
-  final List<Article> sources;
-
-  final String category;
-  @override
-  State<TabsController> createState() => _TabsControllerState();
-}
-
-class _TabsControllerState extends State<TabsController> {
-  int index = 0;
+class TabsController extends StatelessWidget {
+  const TabsController({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -26,20 +14,22 @@ class _TabsControllerState extends State<TabsController> {
       child: Column(
         children: [
           DefaultTabController(
-            length: widget.sources.length,
+            length: HomeCubit.get(context).sources.length,
             child: TabBar(
               indicatorColor: Colors.black,
               isScrollable: true,
               onTap: (value) {
-                index = value;
-                setState(() {});
+                HomeCubit.get(context).changeTap(value);
               },
-              tabs: widget.sources
+              tabs: HomeCubit.get(context)
+                  .sources
                   .map(
                     (e) => SourceNews(
                       sourceName: e.source!.name!,
-                      selected:
-                          widget.sources.indexOf(e) == index ? true : false,
+                      selected: HomeCubit.get(context).index ==
+                              HomeCubit.get(context).sources.indexOf(e)
+                          ? true
+                          : false,
                     ),
                   )
                   .toList(),
@@ -48,41 +38,28 @@ class _TabsControllerState extends State<TabsController> {
           const SizedBox(
             height: 20,
           ),
-          FutureBuilder(
-            future: ApiManger.getNewsData(
-                source: widget.sources[index].source?.id ?? '',
-                category: widget.category),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
-              }
-              if (snapshot.hasError) {
-                return const Center(
-                  child: Text('an error have been ouccered'),
-                );
-              }
-              var articals = snapshot.data?.articles ?? [];
-              return Expanded(
-                child: ListView.separated(
-                  separatorBuilder: (context, index) => const SizedBox(
-                    height: 20,
-                  ),
-                  itemBuilder: (context, index) {
-                    return InkWell(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => DetailsScreen(articale: articals[index], ),)  );
-                      },
-                      child: NewsItem(
-                        article: articals[index]
-                      ),
-                    );
+          Expanded(
+            child: ListView.separated(
+              separatorBuilder: (context, index) => const SizedBox(
+                height: 20,
+              ),
+              itemBuilder: (context, index) {
+                return InkWell(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => DetailsScreen(
+                            articale: HomeCubit.get(context).artical[index],
+                          ),
+                        ));
                   },
-                  itemCount: articals.length,
-                ),
-              );
-            },
+                  child:
+                      NewsItem(article: HomeCubit.get(context).artical[index]),
+                );
+              },
+              itemCount: HomeCubit.get(context).artical.length,
+            ),
           )
         ],
       ),

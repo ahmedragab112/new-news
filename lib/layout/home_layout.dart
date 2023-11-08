@@ -41,7 +41,7 @@ class HomeLayout extends StatelessWidget {
                 } else if (state is HomeGetSourcesSuccessState) {
                   HomeCubit.get(context).getNewsData();
                 } else if (state is HomeGetSourcesErrorState) {
-                  
+
                 } else if (state is HomeGetNewsSuccessState) {
                   Navigator.pop(context);
                 } else if (state is HomeGetNewsErrorState) {

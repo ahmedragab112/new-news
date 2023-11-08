@@ -13,7 +13,7 @@ class HomeCubit extends Cubit<HomeStates> {
   List<Article> artical = [];
   List<Article> sources = [];
   CategoryModel? categoryData;
-  int index = 1;
+  int index = 0;
   void changeSearch() {
     emit(HomeInitState());
     search = !search;

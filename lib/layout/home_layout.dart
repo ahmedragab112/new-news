@@ -39,9 +39,15 @@ class HomeLayout extends StatelessWidget {
                     )),
                   );
                 } else if (state is HomeGetSourcesSuccessState) {
+                  HomeCubit.get(context).getNewsData();
                 } else if (state is HomeGetSourcesErrorState) {
+                  
                 } else if (state is HomeGetNewsSuccessState) {
-                } else if (state is HomeGetNewsErrorState) {}
+                  Navigator.pop(context);
+                } else if (state is HomeGetNewsErrorState) {
+                } else if (state is ChangeTapState) {
+                  HomeCubit.get(context).getNewsData();
+                } else if (state is HomeChangeCategoryState) {}
               },
               builder: (context, state) {
                 return Scaffold(

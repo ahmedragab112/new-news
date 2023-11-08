@@ -11,9 +11,9 @@ import '../drawer_screen.dart';
 class HomeCubit extends Cubit<HomeStates> {
   bool search = false;
   List<Article> artical = [];
-   List<Article> sources = [];
+  List<Article> sources = [];
   CategoryModel? categoryData;
-  int index = 0;
+  int index = 1;
   void changeSearch() {
     emit(HomeInitState());
     search = !search;
@@ -21,7 +21,7 @@ class HomeCubit extends Cubit<HomeStates> {
   }
 
   HomeCubit() : super(HomeInitState());
- 
+
   void onSelectCateogory(selectedCategory) {
     emit(HomeInitState());
     categoryData = selectedCategory;
@@ -29,10 +29,11 @@ class HomeCubit extends Cubit<HomeStates> {
   }
 
   void openCategory(number) {
+    emit(HomeInitState());
     if (number == DrawerScreen.catogryNumber) {
       categoryData = null;
+      emit(OpenCategoryState());
     } else {}
-    emit(OpenCategoryState());
   }
 
   static HomeCubit get(context) => BlocProvider.of(context);
@@ -52,18 +53,19 @@ class HomeCubit extends Cubit<HomeStates> {
     }
   }
 
- void changeTap(int value) {
+  void changeTap(int value) {
     emit(HomeInitState());
     index = value;
     emit(ChangeTapState());
   }
 
-  Future<void> getNewsData(
-      ) async {
-    emit(HomeNewsLoadingState());
+  Future<void> getNewsData() async {
     try {
-      Uri uri = Uri.https(AppConstant.baseUrl, '/v2/everything',
-          {"sources": artical[index].source!.name!, "q": categoryData!.txt});
+      emit(HomeNewsLoadingState());
+      Uri uri = Uri.https(AppConstant.baseUrl, '/v2/everything', {
+        "sources": "${sources[index].source!.id}",
+        "q": categoryData?.txt,
+      });
       final response = await http.get(
         uri,
         headers: {'x-api-key': AppConstant.apiKey},

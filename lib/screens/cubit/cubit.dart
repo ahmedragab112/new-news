@@ -1,15 +1,14 @@
-import 'dart:convert';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news_app_cours/models/article.dart';
 import 'package:news_app_cours/screens/cubit/states.dart';
-import 'package:http/http.dart' as http;
 import '../../models/category_model.dart';
 import '../../models/us_data.dart';
-import '../../shared/constant/app_const.dart';
 import '../drawer_screen.dart';
+import '../repo/repositry.dart';
 
 class HomeCubit extends Cubit<HomeStates> {
   bool search = false;
+  HomeRepositry repo;
   List<Article> artical = [];
   List<Article> sources = [];
   CategoryModel? categoryData;
@@ -20,7 +19,7 @@ class HomeCubit extends Cubit<HomeStates> {
     emit(SearchState());
   }
 
-  HomeCubit() : super(HomeInitState());
+  HomeCubit(this.repo) : super(HomeInitState());
 
   void onSelectCateogory(selectedCategory) {
     emit(HomeInitState());
@@ -38,18 +37,13 @@ class HomeCubit extends Cubit<HomeStates> {
 
   static HomeCubit get(context) => BlocProvider.of(context);
   Future<void> getSources() async {
-    emit(HomeSourcesLoadingState());
     try {
-      Uri url = Uri.https(
-          AppConstant.baseUrl, '/v2/top-headlines', {"country": 'us'});
-      final response =
-          await http.get(url, headers: {'x-api-key': AppConstant.apiKey});
-      SourceData data = SourceData.fromJson(jsonDecode(response.body));
+      emit(HomeSourcesLoadingState());
+      SourceData sourceData = await repo.getSouresData();
+      sources = sourceData.articles ?? [];
       emit(HomeGetSourcesSuccessState());
-      sources = data.articles ?? [];
     } catch (e) {
       emit(HomeGetSourcesErrorState());
-      rethrow;
     }
   }
 
@@ -62,17 +56,9 @@ class HomeCubit extends Cubit<HomeStates> {
   Future<void> getNewsData() async {
     try {
       emit(HomeNewsLoadingState());
-      Uri uri = Uri.https(AppConstant.baseUrl, '/v2/everything', {
-        "sources": "${sources[index].source!.id}",
-        "q": categoryData?.txt,
-      });
-      final response = await http.get(
-        uri,
-        headers: {'x-api-key': AppConstant.apiKey},
-      );
-      SourceData data = SourceData.fromJson(jsonDecode(response.body));
+      SourceData sourceData =await repo.getNewsData(sources[index].source?.id??'', categoryData?.txt ?? '');
+      artical = sourceData.articles ?? [];
       emit(HomeGetNewsSuccessState());
-      artical = data.articles ?? [];
     } catch (e) {
       emit(HomeGetNewsErrorState());
       rethrow;

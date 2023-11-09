@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news_app_cours/screens/cubit/cubit.dart';
 import 'package:news_app_cours/screens/cubit/states.dart';
+import 'package:news_app_cours/screens/repo/remote_data_source.dart';
 import 'package:news_app_cours/screens/tabs_controller.dart';
 import '../screens/category_page.dart';
 import '../screens/drawer_screen.dart';
@@ -23,7 +24,7 @@ class HomeLayout extends StatelessWidget {
             fit: BoxFit.fill,
           ),
           BlocProvider(
-            create: (context) => HomeCubit()..getSources(),
+            create: (context) => HomeCubit(RemoteDataSource())..getSources(),
             child: BlocConsumer<HomeCubit, HomeStates>(
               listener: (context, state) {
                 if (state is HomeSourcesLoadingState ||
@@ -32,16 +33,16 @@ class HomeLayout extends StatelessWidget {
                     barrierDismissible: false,
                     context: context,
                     builder: (context) => const AlertDialog(
-                        title: Center(
-                      child: CircularProgressIndicator(
-                        color: Colors.green,
+                      title: Center(
+                        child: CircularProgressIndicator(
+                          color: Colors.green,
+                        ),
                       ),
-                    )),
+                    ),
                   );
                 } else if (state is HomeGetSourcesSuccessState) {
                   HomeCubit.get(context).getNewsData();
                 } else if (state is HomeGetSourcesErrorState) {
-
                 } else if (state is HomeGetNewsSuccessState) {
                   Navigator.pop(context);
                 } else if (state is HomeGetNewsErrorState) {

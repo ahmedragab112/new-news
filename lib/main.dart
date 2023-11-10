@@ -4,7 +4,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:news_app_cours/router/router.dart';
 import 'package:news_app_cours/router/routes.dart';
 import 'package:news_app_cours/shared/styles/theme/theme.dart';
-
 import 'observer.dart';
 
 void main() {

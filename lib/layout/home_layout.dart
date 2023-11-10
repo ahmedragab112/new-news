@@ -77,6 +77,9 @@ class HomeLayout extends StatelessWidget {
                           toolbarHeight: 70,
                           centerTitle: true,
                           title: TextField(
+                            onChanged: (value) {
+                          
+                            },
                             controller: controller,
                             decoration: InputDecoration(
                               fillColor: Colors.white,

@@ -37,8 +37,9 @@ class HomeCubit extends Cubit<HomeStates> {
 
   static HomeCubit get(context) => BlocProvider.of(context);
   Future<void> getSources() async {
+    emit(HomeSourcesLoadingState());
     try {
-      emit(HomeSourcesLoadingState());
+      
       SourceData sourceData = await repo.getSouresData();
       sources = sourceData.articles ?? [];
       emit(HomeGetSourcesSuccessState());
@@ -54,9 +55,9 @@ class HomeCubit extends Cubit<HomeStates> {
   }
 
   Future<void> getNewsData() async {
+    emit(HomeNewsLoadingState());
     try {
-      emit(HomeNewsLoadingState());
-      SourceData sourceData =await repo.getNewsData(sources[index].source?.id??'', categoryData?.txt ?? '');
+      SourceData sourceData =await repo.getNewsData(sources[index].source!.id, categoryData?.txt ?? '');
       artical = sourceData.articles ?? [];
       emit(HomeGetNewsSuccessState());
     } catch (e) {
